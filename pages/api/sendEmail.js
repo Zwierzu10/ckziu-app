@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 
 export const config = {
   api: {
-    bodyParser: false, // Disabling body parser for file uploads
+    bodyParser: false, 
   },
 };
 
@@ -42,23 +42,22 @@ const handler = async (req, res) => {
         });
       }
 
-      // Nodemailer configuration for Outlook
       const transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com', // Outlook SMTP server
-        port: 587, // SMTP port for STARTTLS
-        secure: false, // Use TLS (not SSL)
+        host: 'smtp.office365.com', 
+        port: 587,
+        secure: false,
         auth: {
-          user: process.env.OUTLOOK_EMAIL, // Outlook email address
-          pass: process.env.OUTLOOK_PASSWORD, // Outlook password (not app password)
+          user: process.env.OUTLOOK_EMAIL,
+          pass: process.env.OUTLOOK_PASSWORD, 
         },
       });
 
       const mailOptions = {
         from: process.env.OUTLOOK_EMAIL,
-        to: 'konkurs@ckziu.elodz.edu.pl', // Recipient's email address
+        to: 'konkurs@ckziu.elodz.edu.pl', 
         subject: `Praca od ${fields.name} ${fields.surname}`,
         text: `Imię: ${fields.name}\nNazwisko: ${fields.surname}\nSzkoła: ${fields.schoolName}\nImię opiekuna szkolnego: ${fields.parentName}`,
-        attachments, // Attachments array
+        attachments, 
       };
 
       await transporter.sendMail(mailOptions);
