@@ -1,7 +1,7 @@
 'use client';
 import { useState, ChangeEvent, DragEvent, useEffect, FormEvent } from 'react';
-
-
+import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 export default function Home() {
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
@@ -12,8 +12,8 @@ export default function Home() {
   const [parentName, setParentName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-
-
+  const { userId, isLoaded } = useAuth(); 
+  const router = useRouter(); 
   const MAX_FILE_NAME_LENGTH = 30;
 
   const truncateFileName = (fileName: string) => {
@@ -98,6 +98,11 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (isLoaded && !userId) {
+      router.push('/sign-in'); 
+    }
+  }, [isLoaded, userId]);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 2000);
