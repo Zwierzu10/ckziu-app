@@ -67,8 +67,14 @@ const handler = async (req, res) => {
     } catch (error) {
       console.error('Error in handler:', error);
       res.status(500).json({ message: 'Error sending email', error: error.message });
+      console.log('OUTLOOK_EMAIL:', process.env.OUTLOOK_EMAIL);
+      console.log('OUTLOOK_PASSWORD:', process.env.OUTLOOK_PASSWORD);
+
     }
   } else {
+    console.log('OUTLOOK_EMAIL:', process.env.OUTLOOK_EMAIL);
+console.log('OUTLOOK_PASSWORD:', process.env.OUTLOOK_PASSWORD);
+
     res.status(405).json({ message: 'Method Not Allowed' });
   }
 };
