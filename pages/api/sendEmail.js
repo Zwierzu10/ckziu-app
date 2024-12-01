@@ -47,7 +47,7 @@ const handler = async (req, res) => {
         try {
           links = JSON.parse(fields.links);
         } catch (err) {
-          return res.status(400).json({ message: 'Invalid links format' });
+          return res.status(400).json({ message: 'Invalid links format',err });
         }
       }
 
