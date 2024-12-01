@@ -8,6 +8,22 @@ const Header = () => {
   const [resized, setResized] = useState(false);
 
   useEffect(() => {
+    if (menuOpened) {
+      window.scrollTo(0, 0); 
+      document.documentElement.classList.add('no-scroll');
+    } else {
+      document.documentElement.classList.remove('no-scroll');
+    }
+  
+    return () => {
+      document.documentElement.classList.remove('no-scroll'); 
+    };
+  }, [menuOpened]);
+  
+
+
+
+  useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 1024) {
         setMenuOpened(false);

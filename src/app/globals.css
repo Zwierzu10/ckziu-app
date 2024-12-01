@@ -60,4 +60,12 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+
+
+  .no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
+  
   
