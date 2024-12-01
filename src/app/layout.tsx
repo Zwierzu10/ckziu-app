@@ -56,9 +56,6 @@ export default function RootLayout({
               />
             </div>
         </div>
-        <div className="absolute bottom-0 left-0 text-gray-600 lg:text-xl md:text-l sm:text-sm text-sm">
-          <h1>Created by Mateusz Zwierzchowski</h1>
-        </div>
         {children}
       </body>
     </html>

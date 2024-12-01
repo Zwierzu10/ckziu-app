@@ -3,15 +3,15 @@ import nodemailer from 'nodemailer';
 
 export const config = {
   api: {
-    bodyParser: false, 
+    bodyParser: false,
   },
 };
 
 const parseForm = (req) => {
   return new Promise((resolve, reject) => {
     const form = formidable({
-      keepExtensions: true, 
-      multiples: true, 
+      keepExtensions: true,
+      multiples: true,
     });
 
     form.parse(req, (err, fields, files) => {
@@ -36,38 +36,50 @@ const handler = async (req, res) => {
 
         uploadedFiles.forEach((file) => {
           attachments.push({
-            filename: file.originalFilename, 
+            filename: file.originalFilename,
             path: file.filepath,
           });
         });
       }
 
+      let links = [];
+      if (fields.links) {
+        try {
+          links = JSON.parse(fields.links);
+        } catch (err) {
+          return res.status(400).json({ message: 'Invalid links format' });
+        }
+      }
+
       const transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com', 
+        host: 'smtp.office365.com',
         port: 587,
         secure: false,
         auth: {
           user: process.env.OUTLOOK_EMAIL,
-          pass: process.env.OUTLOOK_PASSWORD, 
+          pass: process.env.OUTLOOK_PASSWORD,
         },
       });
 
       const mailOptions = {
         from: process.env.OUTLOOK_EMAIL,
-        to: 'konkurs@ckziu.elodz.edu.pl', 
+        to: 'konkurs@ckziu.elodz.edu.pl',
         subject: `Praca od ${fields.name} ${fields.surname}`,
-        text: `Imię: ${fields.name}\nNazwisko: ${fields.surname}\nSzkoła: ${fields.schoolName}\nImię opiekuna szkolnego: ${fields.parentName}`,
-        attachments, 
+        text: `Imię: ${fields.name}
+Nazwisko: ${fields.surname}
+Szkoła: ${fields.schoolName}
+Imię opiekuna szkolnego: ${fields.parentName}
+
+Linki:
+${links.join('\n')}`,
+        attachments,
       };
 
       await transporter.sendMail(mailOptions);
 
-      console.log('Email sent successfully');
       res.status(200).json({ message: 'Email sent successfully!' });
     } catch (error) {
-      console.error('Error in handler:', error);
       res.status(500).json({ message: 'Error sending email', error: error.message });
-
     }
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });

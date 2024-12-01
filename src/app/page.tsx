@@ -2,6 +2,7 @@
 import { useState, ChangeEvent, DragEvent, useEffect, FormEvent } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+
 export default function Home() {
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
@@ -11,9 +12,10 @@ export default function Home() {
   const [schoolName, setSchoolName] = useState('');
   const [parentName, setParentName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [links, setLinks] = useState<string[]>(['']);
 
-  const { userId, isLoaded } = useAuth(); 
-  const router = useRouter(); 
+  const { userId, isLoaded } = useAuth();
+  const router = useRouter();
   const MAX_FILE_NAME_LENGTH = 30;
 
   const truncateFileName = (fileName: string) => {
@@ -66,27 +68,42 @@ export default function Home() {
   };
 
   const handleDeleteFile = (fileName: string) => {
-    setFileNames((prevFileNames) => prevFileNames.filter(name => name !== fileName));
-    setFiles((prevFiles) => prevFiles.filter(file => file.name !== fileName));
+    setFileNames((prevFileNames) => prevFileNames.filter((name) => name !== fileName));
+    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
+  };
+
+  const handleLinkChange = (index: number, value: string) => {
+    const newLinks = [...links];
+    newLinks[index] = value;
+    setLinks(newLinks);
+  };
+
+  const handleAddLink = () => {
+    setLinks((prevLinks) => [...prevLinks, '']);
+  };
+
+  const handleDeleteLink = (index: number) => {
+    setLinks((prevLinks) => prevLinks.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('surname', surname);
     formData.append('schoolName', schoolName);
     formData.append('parentName', parentName);
-  
+
     files.forEach((file) => formData.append('attachments', file));
-  
+    formData.append('links', JSON.stringify(links)); 
+
     try {
       const response = await fetch('/api/sendEmail', {
         method: 'POST',
-        body: formData, 
+        body: formData,
       });
-  
+
       if (response.ok) {
         alert('Email sent successfully');
       } else {
@@ -100,7 +117,7 @@ export default function Home() {
 
   useEffect(() => {
     if (isLoaded && !userId) {
-      router.push('/sign-in'); 
+      router.push('/sign-in');
     }
   }, [isLoaded, userId]);
 
@@ -125,7 +142,7 @@ export default function Home() {
   } else {
     return (
       <div
-        className="flex justify-center lg:items-center md:items-center sm:items-start items-start w-full h-screen p-4"
+        className="flex justify-center lg:items-center md:items-start sm:items-start items-start w-full h-screen p-4"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -135,7 +152,7 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="flex flex-col">
             <input
               type="text"
-              placeholder="Imię"
+              placeholder="Imię*"
               className="mb-2 p-2 rounded-lg text-black w-full"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -143,7 +160,7 @@ export default function Home() {
             />
             <input
               type="text"
-              placeholder="Nazwisko"
+              placeholder="Nazwisko*"
               className="mb-2 p-2 rounded-lg text-black w-full"
               value={surname}
               onChange={(e) => setSurname(e.target.value)}
@@ -151,7 +168,7 @@ export default function Home() {
             />
             <input
               type="text"
-              placeholder="Imię opiekuna szkolnego"
+              placeholder="Imię opiekuna szkolnego*"
               className="mb-2 p-2 rounded-lg text-black w-full"
               value={parentName}
               onChange={(e) => setParentName(e.target.value)}
@@ -159,13 +176,41 @@ export default function Home() {
             />
             <input
               type="text"
-              placeholder="Szkoła"
+              placeholder="Szkoła*"
               className="mb-4 p-2 rounded-lg text-black w-full"
               value={schoolName}
               onChange={(e) => setSchoolName(e.target.value)}
               required
             />
-            <div className="h-1/2 flex justify-center items-end w-full mb-4 ">
+            <div className="mb-4 p-2 rounded-lg bg-white h-32 overflow-y-auto scrollbar-hide">
+              {links.map((link, index) => (
+                <div key={index} className="flex items-center mb-2">
+                  <input
+                    type="text"
+                    placeholder={`Link ${index + 1}`}
+                    className="p-2 border rounded-lg text-black flex-grow"
+                    value={link}
+                    onChange={(e) => handleLinkChange(index, e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="ml-2 bg-red-500 text-white rounded-lg px-2 py-1"
+                    onClick={() => handleDeleteLink(index)}
+                  >
+                    Usuń
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="mt-2 bg-blue-500 text-white rounded-lg px-4 py-1"
+                onClick={handleAddLink}
+              >
+                + Dodaj Link
+              </button>
+            </div>
+
+            <div className="h-1/2 flex justify-center items-end w-full mb-4">
               <div className="w-full rounded-lg bg-[#efefef] flex flex-col items-center justify-center hover:bg-gray-300 transition-all duration-500">
                 <input
                   id="file-upload"
@@ -203,7 +248,7 @@ export default function Home() {
             </button>
           </form>
 
-          <div className={`mt-4 p-4 border-2 border-dashed ${dropFocused ? "border-blue-500" : "border-gray-300"} rounded-lg text-center`}>
+          <div className={`mt-4 p-4 border-2 border-dashed ${dropFocused ? 'border-blue-500' : 'border-gray-300'} rounded-lg text-center`}>
             {dropFocused ? (
               <div className="bg-yellow-200 p-2 rounded-lg">
                 <span className="text-blue-500 font-bold">Upuść pliki tutaj!</span>
