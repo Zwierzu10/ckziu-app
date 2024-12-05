@@ -2,8 +2,7 @@
 import { useState, ChangeEvent, DragEvent, useEffect, FormEvent } from 'react';
 import { useAuth, useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import Lottie from 'lottie-react';
-import animPath from "../../SendingAnimationJson.json";
+
 
 export default function Home() {
   const [fileNames, setFileNames] = useState<string[]>([]);
@@ -171,7 +170,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
+  if (isLoading || isSending) {
     return (
       <div className="w-full h-[87vh] flex flex-col justify-center items-center">
         <div className="lg:w-[10%] md:w-[15%] sm:w-[40%] w-[40%] h-[10%] flex justify-evenly items-center">
@@ -185,13 +184,7 @@ export default function Home() {
       </div>
     );
   }
-  if(isSending){
-    return(
-      <div className="w-full h-[87vh] flex flex-col justify-center items-center">
-         <Lottie animationData={animPath} loop={true} style={{ width: 350, height: 350 }} />
-      </div>
-    );
-  }
+
   if(!(isSending) || !(isLoading)){
     return (
       <div
