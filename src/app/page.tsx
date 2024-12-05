@@ -1,7 +1,9 @@
 'use client';
 import { useState, ChangeEvent, DragEvent, useEffect, FormEvent } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth, useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import Lottie from 'lottie-react';
+import animPath from "../../SendingAnimationJson.json";
 
 export default function Home() {
   const [fileNames, setFileNames] = useState<string[]>([]);
@@ -13,10 +15,14 @@ export default function Home() {
   const [parentName, setParentName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [links, setLinks] = useState<string[]>(['']);
+  const [isSending, setIsSending] = useState<boolean>(false)
+  const [fileSizeError, setFileSizeError] = useState<string | null>(null);
 
+  const { user } = useUser();
   const { userId, isLoaded } = useAuth();
   const router = useRouter();
   const MAX_FILE_NAME_LENGTH = 30;
+  const MAX_FILE_SIZE_MB = 30
 
   const truncateFileName = (fileName: string) => {
     return fileName.length > MAX_FILE_NAME_LENGTH
@@ -34,6 +40,16 @@ export default function Home() {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
     if (selectedFiles.length > 0) {
+
+      const totalSize = selectedFiles.reduce((total, file) => total + file.size, 0);
+      const totalSizeMB = totalSize / (1024 * 1024); 
+
+      if (totalSizeMB > MAX_FILE_SIZE_MB) {
+        setFileSizeError(`Całkowity rozmiar plików przekracza ${MAX_FILE_SIZE_MB} MB. Zajmuje ${totalSizeMB.toFixed(2)} MB.`);
+      } else {
+        setFileSizeError(null);
+      }
+
       setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
       const truncatedNames = selectedFiles.map((file) => truncateFileName(file.name));
       setFileNames((prevFileNames) => [...prevFileNames, ...truncatedNames]);
@@ -61,6 +77,15 @@ export default function Home() {
 
     const droppedFiles = Array.from(e.dataTransfer.files);
     if (droppedFiles.length > 0) {
+      const totalSize = droppedFiles.reduce((total, file) => total + file.size, 0);
+      const totalSizeMB = totalSize / (1024 * 1024);
+
+      if (totalSizeMB > MAX_FILE_SIZE_MB) {
+        setFileSizeError(`Całkowity rozmiar plików przekracza ${MAX_FILE_SIZE_MB} MB. Zajmuje ${totalSizeMB.toFixed(2)} MB.`);
+      } else {
+        setFileSizeError(null);
+      }
+
       setFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
       const truncatedNames = droppedFiles.map((file) => truncateFileName(file.name));
       setFileNames((prevFileNames) => [...prevFileNames, ...truncatedNames]);
@@ -70,7 +95,21 @@ export default function Home() {
   const handleDeleteFile = (fileName: string) => {
     setFileNames((prevFileNames) => prevFileNames.filter((name) => name !== fileName));
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
+  
+
+    const totalSize = files
+      .filter((file) => file.name !== fileName)  
+      .reduce((total, file) => total + file.size, 0);
+  
+    const totalSizeMB = totalSize / (1024 * 1024); 
+  
+    if (totalSizeMB <= MAX_FILE_SIZE_MB) {
+      setFileSizeError(null);
+    } else {
+      setFileSizeError(`Całkowity rozmiar plików przekracza ${MAX_FILE_SIZE_MB} MB. Zajmuje ${totalSizeMB.toFixed(2)} MB.`);
+    }
   };
+  
 
   const handleLinkChange = (index: number, value: string) => {
     const newLinks = [...links];
@@ -88,12 +127,14 @@ export default function Home() {
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
+    setIsSending(true)
 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('surname', surname);
     formData.append('schoolName', schoolName);
     formData.append('parentName', parentName);
+    formData.append('email',user?.emailAddresses[0]?.emailAddress || "")
 
     files.forEach((file) => formData.append('attachments', file));
     formData.append('links', JSON.stringify(links)); 
@@ -105,13 +146,17 @@ export default function Home() {
       });
 
       if (response.ok) {
-        alert('Email sent successfully');
+        console.log('Email sent successfully');
       } else {
         alert('Error sending email');
       }
     } catch (error) {
       console.error('Error:', error);
       alert('Error sending email');
+    }finally{
+      setTimeout(() => {
+        setIsSending(false)
+      }, 3000);
     }
   };
 
@@ -139,7 +184,15 @@ export default function Home() {
         <h1 className="text-gray-700 lg:text-3xl md:text-2xl sm:text-xl">Prosze Czekać</h1>
       </div>
     );
-  } else {
+  }
+  if(isSending){
+    return(
+      <div className="w-full h-[87vh] flex flex-col justify-center items-center">
+         <Lottie animationData={animPath} loop={true} style={{ width: 350, height: 350 }} />
+      </div>
+    );
+  }
+  if(!(isSending) || !(isLoading)){
     return (
       <div
         className="flex justify-center lg:items-center md:items-start sm:items-start items-start w-full h-screen p-4"
@@ -243,9 +296,13 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+            {fileSizeError ? (
+              <p className='text-red-700'>{fileSizeError}</p>
+            ):(
             <button type="submit" className="mt-4 bg-blue-700 text-white rounded-lg py-2">
               Prześlij
             </button>
+            )}
           </form>
 
           <div className={`mt-4 p-4 border-2 border-dashed ${dropFocused ? 'border-blue-500' : 'border-gray-300'} rounded-lg text-center`}>
@@ -257,6 +314,7 @@ export default function Home() {
               <span>Przeciągnij pliki tutaj, aby je przesłać</span>
             )}
           </div>
+            <h1 className='text-center text-yellow-300 mt-2'>Created by Mateusz Zwierzchowski</h1>
         </div>
       </div>
     );

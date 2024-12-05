@@ -62,18 +62,22 @@ const handler = async (req, res) => {
       });
 
       const mailOptions = {
-        from: process.env.OUTLOOK_EMAIL,
+        from: `"${fields.name} ${fields.surname}" <${process.env.OUTLOOK_EMAIL}>`,
+        replyTo: fields.email,
         to: 'konkurs@ckziu.elodz.edu.pl',
         subject: `Praca od ${fields.name} ${fields.surname}`,
-        text: `Imię: ${fields.name}
-Nazwisko: ${fields.surname}
-Szkoła: ${fields.schoolName}
-Imię opiekuna szkolnego: ${fields.parentName}
-
-Linki:
-${links.join('\n')}`,
+        text: `      Imię: ${fields.name}
+      Nazwisko: ${fields.surname}
+      Szkoła: ${fields.schoolName}
+      Imię opiekuna szkolnego: ${fields.parentName}
+      Adres e-mail nadawcy: ${fields.email}
+      
+      Linki:
+      ${links.map((link, index) => `${index + 1}. ${link}`).join('\n      ')}`,
         attachments,
       };
+      
+      
 
       await transporter.sendMail(mailOptions);
 
