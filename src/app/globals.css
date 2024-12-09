@@ -68,3 +68,17 @@ body {
     height: 100vh;
   }
   
+
+  .kolo {
+    animation: rotate 100s linear infinite;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
