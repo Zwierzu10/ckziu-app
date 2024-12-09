@@ -180,7 +180,7 @@ export default function Home() {
           <div className="loadingPart loadingPart4 max-w-4 min-w-2 h-[50%] "></div>
           <div className="loadingPart loadingPart5 max-w-4 min-w-2 h-[50%] "></div>
         </div>
-        <h1 className="text-gray-700 lg:text-3xl md:text-2xl sm:text-xl">Prosze Czekać</h1>
+        <h1 className="text-gray-700 lg:text-3xl md:text-2xl sm:text-xl">{isLoading ? "Prosze Czekać" : "Wysyłanie..."}</h1>
       </div>
     );
   }
