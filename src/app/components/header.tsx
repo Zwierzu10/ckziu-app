@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { SignedIn } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
-
+import useMenuStore from './menuContext';
 const Header = () => {
-  const [menuOpened, setMenuOpened] = useState(false);
+  const { menuOpened, setMenuOpened } = useMenuStore();
   const [resized, setResized] = useState(false);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Header = () => {
         `}
       >
         <button
-          onClick={() => setMenuOpened((prev) => !prev)}
+          onClick={() => setMenuOpened(!menuOpened)}
           className={`z-50 absolute flex w-[10%] h-[50%] flex-col justify-around min-w-[4rem] max-w-[4.5rem] max-h-16 transition-all duration-500
             ${menuOpened ? 'left-2.5 top-2.5' : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'} ${resized ? "flex" : "hidden"}
           `}

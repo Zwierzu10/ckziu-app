@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import kolo from "../../../kolo.png";
 import descriptions from "../../../descriptions.json";
+import useMenuStore from "../components/menuContext";
 
 const Profile = () => {
   const { userId, isLoaded } = useAuth();
@@ -17,6 +18,9 @@ const Profile = () => {
   const [rotationOffset, setRotationOffset] = useState<number>(0);
 
   const descriptionsArray: string[] = descriptions.descriptions;
+
+  const { menuOpened } = useMenuStore();
+
 
   const sections: string[] = [
     "Technik Spedytor",
@@ -147,13 +151,15 @@ const Profile = () => {
           className="w-full lg:w-[65%] h-full flex justify-center items-center p-10 relative"
           onClick={handleWheelClick}
         >
+          {menuOpened ? <></> :
           <Image
             src={kolo}
             alt="Koło profili"
             ref={wheelRef}
-            className="kolo min-w-[10vw] max-w-[40vw]"
+            className="kolo min-w-[10vw] max-w-[40vw] "
             priority
           />
+          }
         </div>
         <div className="w-full lg:w-[35%] h-full flex flex-col justify-start items-center lg:items-start">
           {clickedSection ? (
