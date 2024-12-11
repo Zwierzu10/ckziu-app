@@ -145,13 +145,12 @@ const Profile = () => {
       </div>
     );
   } else {
-    return (
+    return !menuOpened ? (
       <div className="w-full h-[87vh] max-h-[87vh] flex flex-col lg:flex-row justify-between items-center">
         <div
           className="w-full lg:w-[65%] h-full flex justify-center items-center p-10 relative"
           onClick={handleWheelClick}
         >
-          {menuOpened ? <></> :
           <Image
             src={kolo}
             alt="Koło profili"
@@ -159,7 +158,6 @@ const Profile = () => {
             className="kolo min-w-[10vw] max-w-[40vw] "
             priority
           />
-          }
         </div>
         <div className="w-full lg:w-[35%] h-full flex flex-col justify-start items-center lg:items-start">
           {clickedSection ? (
@@ -180,8 +178,8 @@ const Profile = () => {
           )}
         </div>
       </div>
-    );
-  }
+    ) : null;
+  }  
 };
 
 export default Profile;
