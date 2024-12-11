@@ -33,9 +33,11 @@ const Profile = () => {
   useEffect(() => {
     const updateBodyScrollability = () => {
       if (window.innerWidth >= 1024) {
-        document.body.style.overflow = "hidden";
+        document.body.style.overflowY = "hidden";
+        document.body.style.overflowX = "hidden";
       } else {
-        document.body.style.overflow = "auto";
+        document.body.style.overflowY = "auto";
+        document.body.style.overflowX = "hidden";
       }
     };
 
@@ -45,7 +47,7 @@ const Profile = () => {
 
     return () => {
       window.removeEventListener("resize", updateBodyScrollability);
-      document.body.style.overflow = "auto";
+      document.body.style.overflowY = "auto";
     };
   }, []);
 

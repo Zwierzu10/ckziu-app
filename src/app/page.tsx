@@ -145,7 +145,16 @@ export default function Home() {
       });
 
       if (response.ok) {
-        console.log('Email sent successfully');
+        setName('');
+        setSurname('');
+        setSchoolName('');
+        setParentName('');
+        setLinks(['']);
+        setFiles([]);
+        setFileNames([]);
+        setTimeout(() => {
+          alert('Email sent successfully');
+        }, 4000);
       } else {
         alert('Error sending email');
       }
