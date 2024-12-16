@@ -2,10 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css"
 
-import { ClerkProvider } from "@clerk/nextjs";
-
-
-import { UserButton } from "@clerk/nextjs";
 import Header from "./components/header";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,34 +27,17 @@ export default function RootLayout({
 
   
   return (
-    <ClerkProvider afterSignOutUrl="/sign-in" publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="w-screen h-[13vh] flex justify-between items-center">
- 
-
           <div className="w-full h-full">
             <Header />
           </div>
-
-          <div className="absolute top-0 right-0 m-4">
-              <UserButton
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: {
-                      width: '50px', 
-                      height: '50px',
-                    },
-                  },
-                }}
-              />
-            </div>
         </div>
         {children}
       </body>
     </html>
-    </ClerkProvider>
   );
 }

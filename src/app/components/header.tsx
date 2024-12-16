@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { SignedIn } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
 import useMenuStore from './menuContext';
 const Header = () => {
@@ -45,7 +44,6 @@ const Header = () => {
   }, []);
 
   return (
-    <SignedIn>
       <div
         className={`header ${
           !menuOpened
@@ -159,7 +157,6 @@ const Header = () => {
           </Link>
         )}
       </div>
-    </SignedIn>
   );
 };
 

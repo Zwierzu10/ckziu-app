@@ -1,6 +1,5 @@
 'use client';
 import { useState, ChangeEvent, DragEvent, useEffect, FormEvent } from 'react';
-import { useAuth, useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 
@@ -10,6 +9,7 @@ export default function Home() {
   const [dropFocused, setDropFocused] = useState(false);
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
   const [schoolName, setSchoolName] = useState('');
   const [parentName, setParentName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -17,8 +17,7 @@ export default function Home() {
   const [isSending, setIsSending] = useState<boolean>(false)
   const [fileSizeError, setFileSizeError] = useState<string | null>(null);
 
-  const { user } = useUser();
-  const { userId, isLoaded } = useAuth();
+
   const router = useRouter();
   const MAX_FILE_NAME_LENGTH = 30;
   const MAX_FILE_SIZE_MB = 30
@@ -133,7 +132,7 @@ export default function Home() {
     formData.append('surname', surname);
     formData.append('schoolName', schoolName);
     formData.append('parentName', parentName);
-    formData.append('email',user?.emailAddresses[0]?.emailAddress || "")
+    formData.append('email', email)
 
     files.forEach((file) => formData.append('attachments', file));
     formData.append('links', JSON.stringify(links)); 
@@ -147,6 +146,7 @@ export default function Home() {
       if (response.ok) {
         setName('');
         setSurname('');
+        setEmail('');
         setSchoolName('');
         setParentName('');
         setLinks(['']);
@@ -168,11 +168,7 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    if (isLoaded && !userId) {
-      router.push('/sign-in');
-    }
-  }, [isLoaded, userId]);
+
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 2000);
@@ -219,6 +215,14 @@ export default function Home() {
               className="mb-2 p-2 rounded-lg text-black w-full"
               value={surname}
               onChange={(e) => setSurname(e.target.value)}
+              required
+            />
+              <input
+              type="text"
+              placeholder="E-mail*"
+              className="mb-2 p-2 rounded-lg text-black w-full"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
             <input
