@@ -1,6 +1,5 @@
 'use client';
 import { useState, ChangeEvent, DragEvent, useEffect, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
 
 
 export default function Home() {
@@ -18,7 +17,6 @@ export default function Home() {
   const [fileSizeError, setFileSizeError] = useState<string | null>(null);
 
 
-  const router = useRouter();
   const MAX_FILE_NAME_LENGTH = 30;
   const MAX_FILE_SIZE_MB = 30
 

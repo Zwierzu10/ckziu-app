@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import kolo from "../../../kolo.png";
@@ -7,7 +6,6 @@ import descriptions from "../../../descriptions.json";
 import useMenuStore from "../components/menuContext";
 
 const Profile = () => {
-  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [clickedSection, setClickedSection] = useState<string | null>(null);
