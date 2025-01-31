@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import useMenuStore from './menuContext';
+
 const Header = () => {
   const { menuOpened, setMenuOpened } = useMenuStore();
   const [resized, setResized] = useState(false);
@@ -105,9 +106,10 @@ const Header = () => {
           </Link>
         )}
 
-        <Link
+        <a
           onClick={() => setMenuOpened(false)}
-          href="/regulamin"
+          href="./Regulamin-konkursu.pdf"
+          target='_blank'
           className="relative text-1xl md:text-1xl lg:text-2xl xl:text-3xl 
                 rounded-b-xl w-[50%] h-full justify-center items-center after:content-[''] 
                 after:absolute after:w-[1em] after:h-[0.15em] after:bg-gray-500 after:bottom-[0.7em] 
@@ -116,11 +118,12 @@ const Header = () => {
                 hover:after:-translate-x-1/2 hidden lg:flex "
         >
           Regulamin
-        </Link>
+        </a>
         {resized && (
-          <Link
+          <a
             onClick={() => setMenuOpened(false)}
-            href="regulamin"
+            href="./Regulamin-konkursu.pdf"
+            target='_blank'
             className={`text-3xl bg-gray-600 w-[100%] h-[15%] 
               justify-center items-center transition-all duration-500 ease-in-out 
               transform ${
@@ -128,7 +131,7 @@ const Header = () => {
               } hover:bg-gray-800 flex`}
           >
             Regulamin
-          </Link>
+          </a>
         )}
         <Link
           onClick={() => setMenuOpened(false)}
