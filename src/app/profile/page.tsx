@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import kolo from "../../../kolo.png";
+import kolo from "../../../kolo-nowe.png";
 import descriptions from "../../../descriptions.json";
 import useMenuStore from "../components/menuContext";
 
 const Profile = () => {
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [clickedSection, setClickedSection] = useState<string | null>(null);
   const [descSection, setDescSection] = useState<number>(9);
@@ -16,7 +15,6 @@ const Profile = () => {
   const descriptionsArray: string[] = descriptions.descriptions;
 
   const { menuOpened } = useMenuStore();
-
 
   const sections: string[] = [
     "Technik Spedytor",
@@ -28,6 +26,7 @@ const Profile = () => {
     "Technik Fotografii i Multimediów",
     "Technik Analityk",
     "Technik Tekstronik",
+    "Eko Technik",
   ];
 
   useEffect(() => {
@@ -50,7 +49,6 @@ const Profile = () => {
       document.body.style.overflowY = "auto";
     };
   }, []);
-
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
@@ -86,36 +84,73 @@ const Profile = () => {
       let sectionIndex = Math.floor(adjustedAngle / sectionAngle);
       sectionIndex = sectionIndex % sections.length;
 
+      /*
       if (sections[sectionIndex] === "Technik Logistyk") {
         setClickedSection("Technik Logistyk");
         setDescSection(4);
       } else if (sections[sectionIndex] === "Technik Informatyk") {
-        setClickedSection("Technik Programista");
-        setDescSection(3);
-      } else if (sections[sectionIndex] === "Technik Programista") {
         setClickedSection("Technik Informatyk");
         setDescSection(5);
+      } else if (sections[sectionIndex] === "Technik Programista") {
+        setClickedSection("Technik Programista");
+        setDescSection(3);
       } else if (sections[sectionIndex] === "Technik Fotografii i Multimediów") {
-        setClickedSection("Technik Projektant Tekstyliów");
-        setDescSection(2);
-      } else if (sections[sectionIndex] === "Technik Projektant Tekstyliów") {
         setClickedSection("Technik Fotografii i Multimediów");
         setDescSection(6);
+      } else if (sections[sectionIndex] === "Technik Projektant Tekstyliów") {
+        setClickedSection("Technik Projektant Tekstyliów");
+        setDescSection(2);
       } else if (sections[sectionIndex] === "Technik Analityk") {
-        setClickedSection("Technik Weterynarii");
-        setDescSection(1);
-      } else if (sections[sectionIndex] === "Technik Weterynarii") {
         setClickedSection("Technik Analityk");
         setDescSection(7);
+      } else if (sections[sectionIndex] === "Technik Weterynarii") {
+        setClickedSection("Technik Weterynarii");
+        setDescSection(1);
       } else if (sections[sectionIndex] === "Technik Tekstronik") {
-        setClickedSection("Technik Spedytor");
-        setDescSection(0);
-      } else if (sections[sectionIndex] === "Technik Spedytor") {
         setClickedSection("Technik Tekstronik");
         setDescSection(8);
+      } else if (sections[sectionIndex] === "Technik Spedytor") {
+        setClickedSection("Technik Spedytor");
+        setDescSection(0);
+      } else if (sections[sectionIndex] === "Nowy Profil") {
+        setClickedSection("Nowy Profil");
+        setDescSection(9); 
       } else {
         setClickedSection("Kliknij poprawny profil");
-        setDescSection(9);
+        setDescSection(10);
+      }
+        */
+
+      if (sectionIndex == 0) {
+        setClickedSection("Technik Projektant Tekstyliów");
+        setDescSection(2);
+      } else if (sectionIndex == 1) {
+        setClickedSection("Technik Analityk");
+        setDescSection(7);
+      } else if (sectionIndex == 2) {
+        setClickedSection("Technik Logistyk");
+        setDescSection(4);
+      } else if (sectionIndex == 3) {
+        setClickedSection("Technik Informatyk");
+        setDescSection(5);
+      } else if (sectionIndex == 4) {
+        setClickedSection("Technik Tekstronik");
+        setDescSection(8);
+      } else if (sectionIndex == 5) {
+        setClickedSection("Technik Programista");
+        setDescSection(3);
+      } else if (sectionIndex == 6) {
+        setClickedSection("Technik Weterynarii");
+        setDescSection(1);
+      } else if (sectionIndex == 7) {
+        setClickedSection("Technik Spedytor");
+        setDescSection(0);
+      } else if (sectionIndex == 8) {
+        setClickedSection("Eko Technik");
+        setDescSection(10);
+      } else if (sectionIndex == 9) {
+        setClickedSection("Technik Fotografii i Multimediów");
+        setDescSection(6);
       }
     }
   };
@@ -138,16 +173,14 @@ const Profile = () => {
   } else {
     return !menuOpened ? (
       <div className="w-full h-[87vh] max-h-[87vh] flex flex-col lg:flex-row justify-between items-center">
-        <div
-          className="w-full lg:w-[65%] h-full flex justify-center items-center p-10 relative"
-          onClick={handleWheelClick}
-        >
+        <div className="w-full lg:w-[65%] h-full flex justify-center items-center p-10 relative">
           <Image
             src={kolo}
             alt="Koło profili"
             ref={wheelRef}
-            className="kolo min-w-[10vw] max-w-[40vw] "
+            className="kolo min-w-[10vw] max-w-[50vw] "
             priority
+            onClick={handleWheelClick}
           />
         </div>
         <div className="w-full lg:w-[35%] h-full flex flex-col justify-start items-center lg:items-start">
@@ -170,7 +203,7 @@ const Profile = () => {
         </div>
       </div>
     ) : null;
-  }  
+  }
 };
 
 export default Profile;
