@@ -147,7 +147,7 @@ const Profile = () => {
         setDescSection(0);
       } else if (sectionIndex == 8) {
         setClickedSection("Eko Technik");
-        setDescSection(10);
+        setDescSection(9);
       } else if (sectionIndex == 9) {
         setClickedSection("Technik Fotografii i Multimediów");
         setDescSection(6);
