@@ -81,4 +81,29 @@ body {
       transform: rotate(360deg);
     }
   }
+
+
+
+  .tekstRuszajacy {
+    color: black; 
+    font-size: 1.25rem; 
+    text-align: center; 
+  }
   
+  @media (min-width: 640px) {
+    .tekstRuszajacy {
+      font-size: 1.5rem; 
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .tekstRuszajacy {
+      font-size: 1.875rem; 
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .tekstRuszajacy {
+      font-size: 2.25rem; 
+    }
+  }
