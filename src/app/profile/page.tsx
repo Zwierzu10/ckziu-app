@@ -172,36 +172,37 @@ const Profile = () => {
     );
   } else {
     return !menuOpened ? (
-      <div className="w-full h-[87vh] max-h-[87vh] flex flex-col lg:flex-row justify-between items-center">
-        <div className="w-full lg:w-[65%] h-full flex justify-center items-center p-10 relative">
-          <Image
-            src={kolo}
-            alt="Koło profili"
-            ref={wheelRef}
-            className="kolo min-w-[10vw] max-w-[50vw] "
-            priority
-            onClick={handleWheelClick}
-          />
-        </div>
-        <div className="w-full lg:w-[35%] h-full flex flex-col justify-start items-center lg:items-start">
-          {clickedSection ? (
-            <div className="w-full flex flex-col items-center lg:items-start">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-5xl font-bold text-black mb-4">
-                {clickedSection}
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl text-black text-center lg:text-left">
-                {descSection !== null && descSection < descriptionsArray.length
-                  ? descriptionsArray[descSection]
-                  : "Opis nie jest dostępny"}
-              </p>
-            </div>
-          ) : (
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-black font-bold">
-              Wybierz profil
-            </h1>
-          )}
-        </div>
+<div className="w-full h-[87vh] max-h-[87vh] flex flex-col lg:flex-row justify-between items-center">
+  <div className="w-full lg:w-[65%] h-full flex justify-center items-center p-10 relative">
+    <Image
+      src={kolo}
+      alt="Koło profili"
+      ref={wheelRef}
+      className="kolo min-w-[10vw] max-w-[50vw]"
+      priority
+      onClick={handleWheelClick}
+    />
+  </div>
+  <div className="w-full lg:w-[35%] h-full flex flex-col justify-start items-center lg:items-start">
+    {clickedSection ? (
+      <div className="w-full flex flex-col items-center lg:items-start">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-5xl font-bold text-black mb-4">
+          {clickedSection}
+        </h1>
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl text-black text-center lg:text-left">
+          {descSection !== null && descSection < descriptionsArray.length
+            ? descriptionsArray[descSection]
+            : "Opis nie jest dostępny"}
+        </p>
       </div>
+    ) : (
+      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-black font-bold">
+        Wybierz profil
+      </h1>
+    )}
+  </div>
+</div>
+
     ) : null;
   }
 };
