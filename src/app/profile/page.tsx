@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import kolo from "../../../kolo-nowe.png";
+import kolo from "../../../kolo.png";
 import descriptions from "../../../descriptions.json";
 import useMenuStore from "../components/menuContext";
 
@@ -83,7 +83,7 @@ const Profile = () => {
       const sectionAngle = 360 / sections.length;
       let sectionIndex = Math.floor(adjustedAngle / sectionAngle);
       sectionIndex = sectionIndex % sections.length;
-
+      console.log(sectionIndex)
       /*
       if (sections[sectionIndex] === "Technik Logistyk") {
         setClickedSection("Technik Logistyk");
@@ -119,17 +119,17 @@ const Profile = () => {
         setClickedSection("Kliknij poprawny profil");
         setDescSection(10);
       }
-        */
-
+        
+      */
       if (sectionIndex == 0) {
-        setClickedSection("Technik Projektant Tekstyliów");
-        setDescSection(2);
+        setClickedSection("Technik Tekstronik");
+        setDescSection(8);
       } else if (sectionIndex == 1) {
         setClickedSection("Technik Analityk");
         setDescSection(7);
       } else if (sectionIndex == 2) {
-        setClickedSection("Technik Logistyk");
-        setDescSection(4);
+        setClickedSection("Technik Fotografii i Multimediów");
+        setDescSection(6);
       } else if (sectionIndex == 3) {
         setClickedSection("Technik Informatyk");
         setDescSection(5);
@@ -137,24 +137,26 @@ const Profile = () => {
         setClickedSection("Technik Tekstronik");
         setDescSection(8);
       } else if (sectionIndex == 5) {
+        setClickedSection("Technik Logistyk");
+        setDescSection(4);
+      } else if (sectionIndex == 6) {
         setClickedSection("Technik Programista");
         setDescSection(3);
-      } else if (sectionIndex == 6) {
+      } else if (sectionIndex == 7) {
+        setClickedSection("Technik Projektant Tekstyliów");
+        setDescSection(2);
+      } else if (sectionIndex == 8) {
         setClickedSection("Technik Weterynarii");
         setDescSection(1);
-      } else if (sectionIndex == 7) {
+      } else if (sectionIndex == 9) {
         setClickedSection("Technik Spedytor");
         setDescSection(0);
-      } else if (sectionIndex == 8) {
-        setClickedSection("Eko Technik");
-        setDescSection(9);
-      } else if (sectionIndex == 9) {
-        setClickedSection("Technik Fotografii i Multimediów");
-        setDescSection(6);
       }
+        
     }
+      
   };
-
+      
   if (isLoading) {
     return (
       <div className="w-full h-[87vh] flex flex-col justify-center items-center">
@@ -178,7 +180,7 @@ const Profile = () => {
       src={kolo}
       alt="Koło profili"
       ref={wheelRef}
-      className="kolo min-w-[10vw] max-w-[50vw]"
+      className="kolo min-w-[10vw] max-w-[30vw]"
       priority
       onClick={handleWheelClick}
     />

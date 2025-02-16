@@ -5,6 +5,7 @@ import { TypeAnimation } from "react-type-animation";
 const Home = () => {
     return ( 
         <div className="w-screen h-[87vh] flex justify-center items-center p-4">
+            
             <TypeAnimation
                 sequence={[
                     'Witamy na Wojewódzkim Konkursie Informatycznym Dla Uczniów Klas VII - VIII.',
